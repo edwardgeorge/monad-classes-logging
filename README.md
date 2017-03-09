@@ -1,3 +1,3 @@
-# monad-classes-logging-effect
+# monad-classes-logging
 
-add description of monad-classes-logging-effect here
+add description of monad-classes-logging here
