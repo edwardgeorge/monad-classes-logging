@@ -1,0 +1,13 @@
+flags: {}
+extra-package-dbs: []
+packages:
+- '.'
+# - location:
+#     git: git@github.com:feuerbach/monad-classes.git
+#     commit: fb93f7ed0b25a7ac1abfe34c73cac87ae9c772d1
+#   extra-dep: true
+extra-deps:
+- logging-effect-1.2.0
+- monad-classes-0.3.2.0
+- peano-0.1.0.1
+resolver: lts-8.4
