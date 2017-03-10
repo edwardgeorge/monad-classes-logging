@@ -20,9 +20,10 @@ data Res = LRes String | RRes String
   deriving (Eq, Ord, Show)
 
 logit :: (MonadReader a m, MonadLog a m) => (a -> a) -> m ()
-logit f = do msg <- ask
-             logMessage $ f msg
+logit f = ask >>= logMessage . f
 
+-- | This is the operation that will not compile under mtl
+-- | due to functional dependencies.
 op :: (MonadReader Foo m, MonadReader Bar m, MonadLog Foo m, MonadLog Bar m) => m ()
 op = logit (id @Foo) >> logit (id @Bar)
 
