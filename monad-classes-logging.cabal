@@ -1,7 +1,7 @@
 name:                monad-classes-logging
 version:             0.1.0.0
--- synopsis:
--- description:
+synopsis:            monad-classes based typeclass for Ollie's logging-effect LoggingT
+description:         monad-classes based typeclass for Ollie's logging-effect LoggingT
 homepage:            https://github.com/edwardgeorge/monad-classes-logging#readme
 license:             BSD3
 license-file:        LICENSE
