@@ -35,8 +35,9 @@ type instance CanDo (PureLoggingT msg m) eff = LoggingCanDo msg eff
 type instance CanDo (DiscardLoggingT msg m) eff = LoggingCanDo msg eff
 
 type family LoggingCanDo msg eff where
-  LoggingCanDo msg (EffLog msg) = 'True
-  LoggingCanDo msg eff          = 'False
+  LoggingCanDo msg (EffLog    msg) = 'True
+  LoggingCanDo msg (EffWriter msg) = 'True
+  LoggingCanDo msg eff             = 'False
 
 #ifdef USE_FEUERBACH
 class Monad m => MonadLogN (k :: Nat) message m where
