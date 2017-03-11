@@ -10,8 +10,11 @@ import Test.Tasty
 import Test.Tasty.HUnit
 
 main :: IO ()
-main = defaultMain $ testCase "should compile" testcase
-  where testcase = assertEqual "correct results" [RRes "bar", LRes "foo"] (exec op)
+main = defaultMain $ testGroup "tests" [testCase "should compile" testcase
+                                       ,testCase "writer impl" writecase]
+  where testcase  = assertEqual "correct results" opresults (exec op)
+        writecase = assertEqual "correct writes"  opresults (exec opw)
+        opresults = [RRes "bar", LRes "foo"]
 
 data Foo = Foo String
 data Bar = Bar String
@@ -37,3 +40,9 @@ bar (Bar s) = modify $ \r -> RRes s : r
 
 exec :: ReaderT Foo (ReaderT Bar (LoggingT Foo (LoggingT Bar (State [Res])))) () -> [Res]
 exec m = execState (runLoggingT (runLoggingT (runReaderT (runReaderT m (Foo "foo")) (Bar "bar")) foo) bar) []
+
+writeit :: (MonadReader a m, MonadWriter a m) => (a -> a) -> m ()
+writeit f = ask >>= tell . f
+
+opw :: (MonadReader Foo m, MonadReader Bar m, MonadWriter Foo m, MonadWriter Bar m) => m ()
+opw = writeit (id @Foo) >> writeit (id @Bar)
