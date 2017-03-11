@@ -9,6 +9,7 @@
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeFamilies #-}
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 module Control.Monad.Classes.Log where
 import Control.Monad.Classes
 import Control.Monad.Log hiding (MonadLog(..),
@@ -113,3 +114,14 @@ logAlert     = logMessage . WithSeverity Alert
 logEmergency :: MonadLog (WithSeverity a) m => a -> m ()
 logEmergency = logMessage . WithSeverity Emergency
 {-# INLINEABLE logEmergency #-}
+
+-- MonadWriter instances
+
+instance Monad m => MonadWriterN 'Zero msg (LoggingT msg m) where
+  tellN _ msg = logMessage msg
+
+instance (Monad m, Monoid msg) => MonadWriterN 'Zero msg (PureLoggingT msg m) where
+  tellN _ msg = logMessage msg
+
+instance Monad m => MonadWriterN 'Zero msg (DiscardLoggingT msg m) where
+  tellN _ msg = logMessage msg
